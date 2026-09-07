@@ -12,41 +12,41 @@ export const dynamic = 'force-dynamic';
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   validateEnvironmentVariables();
 
-  const routesMap = [''].map((route) => ({
-    url: `${baseUrl}${route}`,
-    lastModified: new Date().toISOString()
-  }));
-
-  const collectionsPromise = getCollections().then((collections) =>
-    collections.map((collection) => ({
-      url: `${baseUrl}${collection.path}`,
-      lastModified: collection.updatedAt
-    }))
-  );
-
-  const productsPromise = getProducts({}).then((products) =>
-    products.map((product) => ({
-      url: `${baseUrl}/product/${product.handle}`,
-      lastModified: product.updatedAt
-    }))
-  );
-
-  const pagesPromise = getPages().then((pages) =>
-    pages.map((page) => ({
-      url: `${baseUrl}/${page.handle}`,
-      lastModified: page.updatedAt
-    }))
-  );
-
-  let fetchedRoutes: Route[] = [];
-
   try {
-    fetchedRoutes = (
-      await Promise.all([collectionsPromise, productsPromise, pagesPromise])
-    ).flat();
+    const [collections, products, pages] = await Promise.all([
+      getCollections().then((shopifyCollections) =>
+        shopifyCollections.map((collection) => ({
+          url: `${baseUrl}${collection.path}`,
+          lastModified: collection.updatedAt,
+        })),
+      ),
+      getProducts({}).then((shopifyProducts) =>
+        shopifyProducts.map((product) => ({
+          url: `${baseUrl}/product/${product.handle}`,
+          lastModified: product.updatedAt,
+        })),
+      ),
+      getPages().then((shopifyPages) =>
+        shopifyPages.map((page) => ({
+          url: `${baseUrl}/${page.handle}`,
+          lastModified: page.updatedAt,
+        })),
+      ),
+    ]);
+
+    const fetchedRoutes: Route[] = [...collections, ...products, ...pages];
+    const newestRoute = fetchedRoutes.reduce((latest, route) => {
+      return route.lastModified > latest ? route.lastModified : latest;
+    }, new Date(0).toISOString());
+
+    return [
+      {
+        url: baseUrl,
+        lastModified: newestRoute,
+      },
+      ...fetchedRoutes,
+    ];
   } catch (error) {
     throw JSON.stringify(error, null, 2);
   }
-
-  return [...routesMap, ...fetchedRoutes];
 }
