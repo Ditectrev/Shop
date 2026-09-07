@@ -41,8 +41,8 @@ export function getOrganizationJsonLd() {
     logo: {
       '@type': 'ImageObject',
       url: `${baseUrl}${ORGANIZATION_LOGO_PATH}`,
-      width: 512,
-      height: 512,
+      width: 799,
+      height: 799,
     },
     sameAs: [
       'https://github.com/Ditectrev',
