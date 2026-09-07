@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Ditectrev logo</title>
+  <desc id="desc">Square Ditectrev brand mark used for organization structured data.</desc>
+  <rect width="512" height="512" rx="96" fill="#111827" />
+  <path d="M184 128h92c96 0 164 57 164 128s-68 128-164 128h-92V128zm84 68h-16v120h16c56 0 100-24 100-60s-44-60-100-60z" fill="#ffffff"/>
+</svg>

@@ -11,6 +11,7 @@ export const SITE_DESCRIPTION =
 
 const ORGANIZATION_ID = `${baseUrl}/#organization`;
 const WEBSITE_ID = `${baseUrl}/#website`;
+const ORGANIZATION_LOGO_PATH = '/organization-logo.svg';
 
 export function truncateMetaDescription(text: string, max = 160) {
   const cleaned = text.replace(/\s+/g, ' ').trim();
@@ -37,7 +38,12 @@ export function getOrganizationJsonLd() {
     '@id': ORGANIZATION_ID,
     name: COMPANY_NAME,
     url: baseUrl,
-    logo: `${baseUrl}/favicon.ico`,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${baseUrl}${ORGANIZATION_LOGO_PATH}`,
+      width: 512,
+      height: 512,
+    },
     sameAs: [
       'https://github.com/Ditectrev',
       'https://github.com/Ditectrev/shop',
