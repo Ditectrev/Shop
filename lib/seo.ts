@@ -94,11 +94,8 @@ export function getProductJsonLd(product: Product) {
   const offer =
     product.variants.find((variant) => variant.availableForSale) ||
     product.variants[0];
-  const price =
-    offer?.price.amount || product.priceRange.minVariantPrice.amount;
-  const priceCurrency =
-    offer?.price.currencyCode ||
-    product.priceRange.minVariantPrice.currencyCode;
+  const price = product.priceRange.maxVariantPrice.amount;
+  const priceCurrency = product.priceRange.maxVariantPrice.currencyCode;
   const sku = offer?.sku || product.handle;
 
   return {
