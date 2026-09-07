@@ -9,6 +9,8 @@ const productFragment = /* GraphQL */ `
     title
     description
     descriptionHtml
+    vendor
+    productType
     options {
       id
       name
@@ -29,6 +31,7 @@ const productFragment = /* GraphQL */ `
         node {
           id
           title
+          sku
           availableForSale
           selectedOptions {
             name

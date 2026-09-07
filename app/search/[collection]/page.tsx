@@ -5,6 +5,8 @@ import { notFound } from 'next/navigation';
 import Grid from 'components/grid';
 import ProductGridItems from 'components/layout/product-grid-items';
 import { defaultSort, sorting } from 'lib/constants';
+import { truncateMetaDescription } from 'lib/seo';
+import { baseUrl } from 'lib/utils';
 
 export async function generateMetadata(props: {
   params: Promise<{ collection: string }>;
@@ -14,10 +16,19 @@ export async function generateMetadata(props: {
 
   if (!collection) return notFound();
 
+  const title = collection.seo?.title || collection.title;
+  const description = truncateMetaDescription(
+    collection.seo?.description ||
+      collection.description ||
+      `${collection.title} products`,
+  );
+
   return {
-    title: collection.seo?.title || collection.title,
-    description:
-      collection.seo?.description || collection.description || `${collection.title} products`
+    title,
+    description,
+    alternates: {
+      canonical: `${baseUrl}/search/${collection.handle}`,
+    },
   };
 }
 
@@ -28,8 +39,13 @@ export default async function CategoryPage(props: {
   const searchParams = await props.searchParams;
   const params = await props.params;
   const { sort } = searchParams as { [key: string]: string };
-  const { sortKey, reverse } = sorting.find((item) => item.slug === sort) || defaultSort;
-  const products = await getCollectionProducts({ collection: params.collection, sortKey, reverse });
+  const { sortKey, reverse } =
+    sorting.find((item) => item.slug === sort) || defaultSort;
+  const products = await getCollectionProducts({
+    collection: params.collection,
+    sortKey,
+    reverse,
+  });
 
   return (
     <section>
