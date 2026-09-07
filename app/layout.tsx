@@ -41,13 +41,9 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     siteName: SITE_NAME,
-    title: `${SITE_NAME} | ${SITE_TAGLINE}`,
-    description: SITE_DESCRIPTION,
   },
   twitter: {
     card: 'summary_large_image',
-    title: `${SITE_NAME} | ${SITE_TAGLINE}`,
-    description: SITE_DESCRIPTION,
   },
   robots: {
     follow: true,
